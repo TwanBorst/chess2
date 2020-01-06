@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script src="https://kit.fontawesome.com/cec035b7c9.js" crossorigin="anonymous"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div id="game">
+      <div id="navigationBar">
+        <span class="title">CHESS²</span>
+        <span class="btn" name="pause">
+          <i class="fas fa-bars"></i>
+        </span>
+      </div>
+      <div class="gameboard"></div>
+      <div class="chesspieces"></div>
+    </div>
+    <div id="mainMenu">
+      <div class="container">
+        <span class="title">CHESS²</span>
+        <ul>
+          <li class="btn" name="playNow">PLAY NOW</li>
+          <li class="btn" name="setupGame">SETUP GAME</li>
+          <li class="btn" name="rankings">RANKINGS</li>
+          <li class="btn" name="settings">SETTINGS</li>
+        </ul>
+      </div> 
+    </div>
+    <div id="pauseMenu">
+      <div class="container">
+        <span class="title">Watch out! Your time is ticking!</span>
+        <ul>
+          <li class="btn" name="resume">RESUME</li>
+          <li class="btn" name="surrender">SURRENDER</li>
+          <li class="btn" name="settingsInGame">SETTINGS</li>
+        </ul>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/javascripts/menu.js"></script>
+    <script type="module" src="/javascripts/gameLogic.js"></script>
+  </body>
+</html>
