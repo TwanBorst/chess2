@@ -1,6 +1,12 @@
 import {game} from "./gameLogic.js";
 import {clickTileEventHandler} from "./eventHandler.js";
+import { ChessPiece } from "./chessPiece.js";
+import { Player } from "./player.js";
 
+/**
+ * Creates and renders new gameboard.
+ * @returns {Tile[][]} 2D Tile array
+ */
 export function createNewGameboard(){
     $('#game .gameboard').empty();
     let horizontalRow = Array(14);
@@ -15,7 +21,13 @@ export function createNewGameboard(){
     return horizontalRow;
 }
 
-class Tile{
+export class Tile{
+    /**
+     *Creates an instance of Tile.
+     * @param {boolean} [blocked=false] Whether this Tile is unable to contain chesspieces
+     * @param {Number} x Horizontal location of tile
+     * @param {Number} y Vertical location of tile
+     */
     constructor(blocked=false, x, y){
         this.blocked = blocked;
         this.x = x;
@@ -47,6 +59,13 @@ class Tile{
         }
         $('#game .gameboard').append(this.element);
     }
+
+    /**
+     * Check whether this tile can be used by this move
+     *
+     * @param {Move} move
+     * @returns {boolean}
+     */
     available(move){
         if(this.blocked){
             return false;
@@ -58,6 +77,12 @@ class Tile{
 
 
 export class Move{
+    /**
+     *Creates an instance of Move.
+     * @param {ChessPiece} chessPiece
+     * @param {Tile} from
+     * @param {Tile} to
+     */
     constructor(chessPiece, from, to){
         this.chessPiece = chessPiece;
         this.from = from;
@@ -69,7 +94,15 @@ export class Move{
             console.error('Invalid move!');
         }
     }
+
+    /**
+     * Whether this move is a valid one or not
+     * @returns {boolean}
+     */
     checkValidity(){
+        if(!this.chessPiece.player.yourTurn){
+            return false;
+        }
         if(!this.to.available(this)){
             return false;
         }
@@ -81,18 +114,34 @@ export class Move{
         return true;
     }
     // TODO: We still need to send our Move to the server.
+
+    /**
+     * Execute this move
+     */
     execute(){
         if(this.to.chessPiece!=null){
+            // @ts-ignore
             window.player.points += this.to.chessPiece.chessPieceType.points;
             this.to.chessPiece.removeFromGame();
+            // @ts-ignore
             console.log(window.player.name + " has earned "+ this.to.chessPiece.chessPieceType.points + "points and now has a total of "+ window.player.points + " points!");
         }
         this.chessPiece.moveToTile(this.to);
+        this.chessPiece.player.yourTurn = false;
+        // @ts-ignore
+        window.server.send(JSON.stringify({type: 'move', data: {from: {x: this.from.x, y: this.from.y}, to: {x: this.to.x, y: this.to.y}}}));
     }
 }
 
-// Returns other players corresponding tile
+/**
+ * Returns the initial tile of another players chesspieces depending on their player number and yours
+ *
+ * @param {Player} player Other player
+ * @param {Tile} tile Tile it would be on if it were youre chesspiece
+ * @returns {Tile} Corresponding tile
+ */
 export function convertToPlayerCO(player, tile){
+    // @ts-ignore
     let you = window.player.playerNumber;
     if(you > player.playerNumber){
         you -= 4;

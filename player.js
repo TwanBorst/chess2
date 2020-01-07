@@ -1,36 +1,96 @@
 import {server} from "./server.js"
+import WebSocket from "ws";
+import { Lobby } from "./lobby.js";
+import { Game } from "./game.js";
+
 export class Player {
+    /**
+     * Constructor for Player class
+     * @param {WebSocket} socket Players websocket
+     * @param {String} playerID Players name
+     * @param {Lobby} lobby Players lobby
+     */
     constructor(socket, playerID = null, lobby = null) {
         this.socket = socket
         this.lobby = lobby
-        this.playerID = playerID;
-
-        this.playing = false;
-        this.left = false;
-        this.totalPoints = 0;
         this.game = null;
 
+        // TODO: Replace playerID by an unique id and add playerName which are loaded from db
+        // Stats
+        this.playerID = playerID;
+        this.totalPoints = 0; // TODO: Grab totalPoints value from database
+
+        // Status
+        this.playing = false;
+        this.left = false;
+
+        // Game
+        this.playerNumber = 0;
+        this.points = 0;
+
+        // Events
+        this.socket.addEventListener('close', (evt)=> {this.playerLeft.apply(this, [evt])});
         this.socket.addEventListener('message', (evt) => {this.socketMessageReceived.apply(this, [evt])});
     }
+
+    /**
+     * Send a message to the player
+     * @param {Object} object
+     * @param {String} object.type The type of data that message will contain
+     * @param {Object} object.data The data the message will contain
+     */
     sendMessage(object){
         this.socket.send(JSON.stringify(object));
     }
+
+    /**
+     * Join this lobby.
+     * @param {Lobby} lobby 
+     */
     joinLobby(lobby) {
         console.log("Player '" + this.playerID + "' joined lobby '" + lobby.id + "'.");
-        lobby.addPlayer(this);
         this.lobby = lobby;
+        lobby.addPlayer(this);
     }
+
+    /**
+     * Join this game.
+     * @param {Game} game 
+     */
     joinGame(game) {
+        this.lobby.removePlayer(this);
+        this.lobby = null;
         this.game = game;
         this.playing = true;
+        this.points = 0;
     }
+
+    /**
+     * Fired when this player's socket closes.
+     * @param {CloseEvent} evt 
+     */
+    playerLeft(evt){
+        server.removePlayer(this);
+        if(this.lobby!=null){
+            this.lobby.removePlayer(this);
+        }
+        if(this.game!=null){
+            this.left = true;
+            this.game.announcePlayerLeft(this);
+        }
+    }
+
+    /**
+     * Fired when server receives message from this players socket
+     * @param {MessageEvent} evt
+     */
     socketMessageReceived(evt) {
         let message = JSON.parse(evt.data);
-        if (message.type == undefined) {
+        if (message.type == undefined || message.data == undefined) {
             return;
         }
-        if (message.type == "lobby" && message.lobby != undefined && message.lobby.length != 0) {
-            if (message.lobby == "public") {
+        if (message.type == "lobby" && message.data.length != 0) {
+            if (message.data == "public") {
                 // Public lobby
                 let publicLobby = server.getLobby("public");
 
@@ -41,12 +101,22 @@ export class Player {
                 }
                 this.joinLobby(publicLobby);
             } else {
-                let lobby = server.getLobby(message.lobby);
+                let lobby = server.getLobby(message.data);
                 if (lobby == null) {
-                    lobby = server.addLobby(lobbyID);
+                    lobby = server.addLobby(message.data);
                 }
                 this.joinLobby(lobby);
             }
+        } else if(message.type=="move"){
+            if(this.game==null){
+                return;
+            }
+            this.game.players.forEach((player)=>{
+                if(player!=this){
+                    player.sendMessage({type: 'move', data: {player: this.playerNumber, move: message.data}});
+                }
+            });
+            this.game.giveTurn(this.game.playersTurn.getNext().element);
         }
     }
     toClient(){
