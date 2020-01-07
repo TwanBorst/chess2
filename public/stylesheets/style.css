@@ -28,7 +28,6 @@ body {
   opacity: 0.9;
   transition-property: top;
   transition-duration: 0.5s;
-  overflow:hidden;
 }
 #pauseMenu{
   background-color: black;
@@ -42,7 +41,6 @@ body {
   opacity: 0.9;
   transition-property: top;
   transition-duration: 0.5s;
-  overflow:hidden;
 }
 
 #game #navigationBar{
@@ -108,9 +106,6 @@ body {
 }
 #game .chesspieces svg[player="4"]{
   color: #408700;
-}
-#game .chesspieces svg[player="-1"]{
-  color: #242424;
 }
 
 #game .gameboard .tile.blocked{
