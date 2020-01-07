@@ -1,5 +1,6 @@
 import {Player} from "./player.js";
 import {createNewGameboard} from "./gameBoard.js";
+import {serverMessageHandler} from "./eventHandler.js";
 
 let temporaryPlayers = [
     {name: "Twan", totalPoints: 0, playerNumber: 1},
@@ -22,6 +23,7 @@ class Game{
 }
 let game = new Game();
 let server = new WebSocket("ws://"+window.location.hostname+":8005");
+server.onmessage = serverMessageHandler;
 
 // game.addPlayer(temporaryPlayers[0].name, temporaryPlayers[0].totalPoints, temporaryPlayers[0].playerNumber, true);
 // game.addPlayer(temporaryPlayers[1].name, temporaryPlayers[1].totalPoints, temporaryPlayers[1].playerNumber);

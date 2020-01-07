@@ -1,4 +1,6 @@
 import {Move} from "./gameBoard.js";
+import {server, game} from "./gameLogic.js";
+
 // Select chess piece event
 export function clickChessPieceEventHandler(event){
     let chesspiece = event.data.chesspiece;
@@ -27,5 +29,14 @@ export function clickTileEventHandler(event){
         console.log('No chesspiece on this tile. If you want to move to it select a chesspiece first!');
     }
 }
+
+export function serverMessageHandler(event){
+    let message = JSON.parse(event.data);
+    if(message.type&&message.type=="addPlayer"&&message.data){
+        game.addPlayer(message.data.name, message.data.totalPoints, message.data.playerNumber, message.data.you);
+    }
+}
+
+
 
 // TODO: Console messages should be replaced by recognizable sounds or visual changes.

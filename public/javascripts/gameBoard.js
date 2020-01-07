@@ -93,14 +93,18 @@ export class Move{
 
 // Returns other players corresponding tile
 export function convertToPlayerCO(player, tile){
-    if(player.playerNumber==2){
-        return game.gameboard[Math.abs(tile.y-13)][tile.x];
-    } else if(player.playerNumber==3) {
-        return game.gameboard[Math.abs(tile.x-13)][Math.abs(tile.y-13)];
-    } else if(player.playerNumber==4){
-        return game.gameboard[tile.y][Math.abs(tile.x-13)];
-    } else {
+    let you = window.player.playerNumber;
+    if(you > player.playerNumber){
+        you -= 4;
+    }
+    if(player.you){
         return tile;
+    } else if (you+1==player.playerNumber){
+        return game.gameboard[Math.abs(tile.y-13)][tile.x];
+    } else if (you+2==player.playerNumber){
+        return game.gameboard[Math.abs(tile.x-13)][Math.abs(tile.y-13)];
+    } else {
+        return game.gameboard[tile.y][Math.abs(tile.x-13)];
     }
 }
 

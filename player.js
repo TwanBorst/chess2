@@ -12,6 +12,9 @@ export class Player {
 
         this.socket.addEventListener('message', (evt) => {this.socketMessageReceived.apply(this, [evt])});
     }
+    sendMessage(object){
+        this.socket.send(JSON.stringify(object));
+    }
     joinLobby(lobby) {
         console.log("Player '" + this.playerID + "' joined lobby '" + lobby.id + "'.");
         lobby.addPlayer(this);
@@ -45,5 +48,8 @@ export class Player {
                 this.joinLobby(lobby);
             }
         }
+    }
+    toClient(){
+        return {name: this.playerID, totalPoints: this.totalPoints};
     }
 }
