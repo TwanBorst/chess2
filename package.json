@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm install \n node ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
+    "@types/jquery": "^3.3.31",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
