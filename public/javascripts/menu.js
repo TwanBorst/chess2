@@ -2,8 +2,7 @@ $('.btn[name="playNow"]').click(()=>{
     $('#mainMenu').css('top', '-100%');
     $('#game #navigationBar span.title').toggle();
     $('#game #navigationBar span.btn').toggle();
-    // @ts-ignore
-    window.server.send(JSON.stringify({type: 'lobby', data: 'public'}));
+    window.server.send(JSON.stringify({type: 'lobby', lobby: 'public'}));
 });
 
 $('.btn[name="pause"]').click(()=>{
