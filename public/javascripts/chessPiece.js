@@ -1,5 +1,7 @@
 import {clickChessPieceEventHandler} from "./eventHandler.js";
 import {game} from "./gameLogic.js";
+import {Tile} from "./gameBoard.js";
+
 export class ChessPiece {
     constructor(tile, player, chessPieceType){
         this.tile = tile;
@@ -17,11 +19,24 @@ export class ChessPiece {
         
         this.moveToTile(this.tile, false);
 
-        this.element.click({chesspiece: this}, clickChessPieceEventHandler);
+        this.element.on("click", {chesspiece: this}, clickChessPieceEventHandler);
 
         $('#game .chesspieces').append(this.element);
         
     }
+    playerDead(){
+        if(this.chessPieceType.name!="king"){
+            this.chessPieceType.points = 0;
+        }
+        // The chesspieces only turn black if the chesspieces were viewed before this event.
+        this.element.children().last().attr('player', -1);
+    }
+
+    /**
+     * Move this chesspiece to another tile.
+     * @param {Tile} tile
+     * @param {boolean} [hasMoved=true]
+     */
     moveToTile(tile, hasMoved=true){
         this.tile.free = true;
         this.tile.chessPiece = null;
