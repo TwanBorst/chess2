@@ -1,4 +1,4 @@
-import {server} from "./server.js"
+import { server } from "./server.js"
 import WebSocket from "ws";
 import { Lobby } from "./lobby.js";
 import { Game } from "./game.js";
@@ -22,15 +22,16 @@ export class Player {
 
         // Status
         this.playing = false;
-        this.left = false;
 
         // Game
         this.playerNumber = 0;
         this.points = 0;
+        this.left = false;
+        this.dead = false;
 
         // Events
-        this.socket.addEventListener('close', (evt)=> {this.playerLeft.apply(this, [evt])});
-        this.socket.addEventListener('message', (evt) => {this.socketMessageReceived.apply(this, [evt])});
+        this.socket.addEventListener('close', (evt) => { this.playerLeft.apply(this, [evt]) });
+        this.socket.addEventListener('message', (evt) => { this.socketMessageReceived.apply(this, [evt]) });
     }
 
     /**
@@ -39,7 +40,7 @@ export class Player {
      * @param {String} object.type The type of data that message will contain
      * @param {Object} object.data The data the message will contain
      */
-    sendMessage(object){
+    sendMessage(object) {
         this.socket.send(JSON.stringify(object));
     }
 
@@ -63,20 +64,25 @@ export class Player {
         this.game = game;
         this.playing = true;
         this.points = 0;
+        this.left = false;
+        this.dead = false;
     }
 
     /**
      * Fired when this player's socket closes.
      * @param {CloseEvent} evt 
      */
-    playerLeft(evt){
+    playerLeft(evt) {
         server.removePlayer(this);
-        if(this.lobby!=null){
+        if (this.lobby != null) {
             this.lobby.removePlayer(this);
         }
-        if(this.game!=null){
+        if (this.game != null) {
             this.left = true;
-            this.game.announcePlayerLeft(this);
+            this.playing = false;
+            if(this.dead==false){
+                this.game.announcePlayerLeft(this);
+            }
         }
     }
 
@@ -107,19 +113,38 @@ export class Player {
                 }
                 this.joinLobby(lobby);
             }
-        } else if(message.type=="move"){
-            if(this.game==null){
+        } else if (message.type == "move") {
+            if (this.game == null) {
                 return;
             }
-            this.game.players.forEach((player)=>{
-                if(player!=this){
-                    player.sendMessage({type: 'move', data: {player: this.playerNumber, move: message.data}});
+            this.game.players.forEach((player) => {
+                if (player != this) {
+                    player.sendMessage({ type: 'move', data: { player: this.playerNumber, move: message.data } });
                 }
             });
             this.game.giveTurn(this.game.playersTurn.getNext().element);
+        } else if (message.type == "checkmate") {
+            if (this.game == null) {
+                return;
+            }
+            this.game.players.forEach((player)=>{
+                if(player != this){
+                    if(message.data.players.includes(this.playerNumber)){
+                        this.points += 20;
+                    }
+                    player.sendMessage({type: 'checkmate', data: {checkmate: message.data.checkmate, players: message.data.players}});
+                }
+            });
+            this.dead = true;
+            if(this.game.players.filter(p=>{return p.dead==false&&p.left==false;}).length>1){
+                this.game.giveTurn(this.game.playersTurn.getNext().element);
+                this.game.playersTurn.remove(this);
+            } else {
+               this.game.gameOver();
+            }
         }
     }
-    toClient(){
-        return {name: this.playerID, totalPoints: this.totalPoints};
+    toClient() {
+        return { name: this.playerID, totalPoints: this.totalPoints };
     }
 }
