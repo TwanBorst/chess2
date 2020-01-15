@@ -1,7 +1,8 @@
 import {Player} from "./player.js";
 import {createNewGameboard} from "./gameBoard.js";
 import {serverMessageHandler} from "./eventHandler.js";
-
+let game = null;
+createNewGameboard();
 let temporaryPlayers = [
     {name: "Twan", totalPoints: 0, playerNumber: 1},
     {name: "Pravesha", totalPoints: 50, playerNumber: 2},
@@ -9,7 +10,7 @@ let temporaryPlayers = [
     {name: "Lynn", totalPoints: 40, playerNumber: 4}
 ];
 
-class Game{
+export class Game{
     constructor(){
         this.gameboard = createNewGameboard();
         // Array of players in the game;
@@ -29,9 +30,25 @@ class Game{
     addPlayer(name, totalPoints, playerNumber, you=false){
         this.players.push(new Player(name, totalPoints, playerNumber, you));
     }
+    gameOver(){
+        $('#game .chesspieces').empty();
+        // @ts-ignore
+        window.game = null;
+        // @ts-ignore
+        window.player = null;
+    }
+    static startGame(){
+        // @ts-ignore
+        if(window.game!=null){
+            // @ts-ignore
+            window.game.gameOver();
+        }
+        game = new Game();
+        // @ts-ignore
+        window.game = game;
+    }
 }
 
-let game = new Game();
 let server = new WebSocket("ws://"+window.location.hostname+":8005");
 server.onmessage = serverMessageHandler;
 

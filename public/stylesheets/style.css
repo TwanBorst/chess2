@@ -125,6 +125,15 @@ body {
   background-color: #c8c7c7;
 }
 
+#game .gameboard .tile.green{
+  border: green solid;
+  animation-name: borderAnimation;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
 #game .chesspieces{
   position: absolute;
   top: calc(2rem + 10px);
@@ -177,5 +186,10 @@ body {
   display: block;
   margin: 10% 0;
   cursor: pointer;
+}
+
+@keyframes borderAnimation{
+  from {border-width: 0.5vh;}
+  to {border-width: 0.1vh;}
 }
 

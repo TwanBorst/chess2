@@ -1,6 +1,6 @@
 import {clickChessPieceEventHandler} from "./eventHandler.js";
 import {game} from "./gameLogic.js";
-import {Tile} from "./gameBoard.js";
+import {Tile, convertFromPlayerCO, TileSafeForKing} from "./gameBoard.js";
 
 export class ChessPiece {
     constructor(tile, player, chessPieceType){
@@ -66,6 +66,10 @@ export class ChessPieceType {
 }
 
 export let pawn = new ChessPieceType("pawn", 1, function(move){
+    // This move validator can only validate moves for pawns of window.player, so we convert the tiles in the move to the corresponding tiles of player window.player to make this also work for other players.
+    move.from = convertFromPlayerCO(move.chessPiece.player, move.from);
+    move.to = convertFromPlayerCO(move.chessPiece.player, move.to);
+
     if((move.from.y == move.to.y+1) && (Math.abs(move.from.x-move.to.x) == 1)){
         return (move.to.chessPiece!=null) && (!move.to.chessPiece.player.you);
     } else if(move.chessPiece.hasMoved){
@@ -119,7 +123,7 @@ export let knight = new ChessPieceType("knight", 3, function(move){
 }, $("<i>", {"class": "fas fa-chess-knight"}));
 
 export let king = new ChessPieceType("king", 20, function(move){
-    return Math.abs(move.from.x-move.to.x)<2&&Math.abs(move.from.y-move.to.y)<2;
+    return Math.abs(move.from.x-move.to.x)<2&&Math.abs(move.from.y-move.to.y)<2&&TileSafeForKing(move.chessPiece.player, move.to);
 }, $("<i>", {"class": "fas fa-chess-king"}));
 
 export let queen = new ChessPieceType("queen", 9, function(move){

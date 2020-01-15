@@ -1,4 +1,5 @@
 import {Player} from "./player.js";
+import { server } from "./server.js";
 export class Game {
     /**
      * Constructor for Game class
@@ -39,6 +40,10 @@ export class Game {
      * @param {Player} left Player who left.
      */
     announcePlayerLeft(left){
+        if(this.players.filter(p=>{return p.dead==false&&p.left==false;}).length<=1){
+            this.gameOver();
+            return;
+        }
         if(this.playersTurn.current!=null&&this.playersTurn.current.element==left){
             this.playersTurn.getNext();
         }
@@ -57,6 +62,22 @@ export class Game {
                 player.sendMessage({type: 'playerTurn', data: turn.playerNumber});
             }
         });
+    }
+
+    gameOver(){
+        this.players.forEach(p=>{
+            if(p.left==false){
+                p.sendMessage({type: 'gameOver', data: {}});
+                p.playing = false;
+                p.game = null;
+                p.points = 0;
+            }
+        });
+        let index = server.games.indexOf(this);
+        if(index!=-1){
+            server.games.splice(index, 1);
+        }
+        this.players = null;
     }
 }
 class CLinkedList {
@@ -83,6 +104,7 @@ class CLinkedList {
             this.head.previous = this.head;
         } else {
             this.tail.next = new Node(element);
+            this.tail.next.previous = this.tail;
             this.tail = this.tail.next;
             this.tail.next = this.head;
         }
