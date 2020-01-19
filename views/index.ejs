@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
+  <style>
+ .btn span {
+   cursor: pointer;
+   display: inline-block;
+   position: relative;
+   transition: 0.5s;
+ }
+ .btn span:after {
+   content: '\00bb';
+   position: absolute;
+   opacity: 0;
+   top: 0;
+   right: -20px;
+   transition: 0.5s;
+ }
+ .btn:hover span {
+   padding-right: 50px;
+ }
+ .btn:hover span:after {
+   opacity: 1;
+   right: 0;
+ }
+  </style>
     <title><%= title %></title>
     <script src="https://kit.fontawesome.com/cec035b7c9.js" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -20,10 +43,10 @@
       <div class="container">
         <span class="title">CHESS²</span>
         <ul>
-          <li class="btn" name="playNow">PLAY NOW</li>
-          <li class="btn" name="setupGame">SETUP GAME</li>
-          <li class="btn" name="rankings">RANKINGS</li>
-          <li class="btn" name="settings">SETTINGS</li>
+          <li class="btn" name="playNow"><span>PLAY NOW</span></li>
+          <li class="btn" name="setupGame"><span>SETUP GAME</span></li>
+          <li class="btn" name="rankings"><span>RANKINGS</span></li>
+          <li class="btn" name="settings"><span>SETTINGS</span></li>
         </ul>
       </div> 
     </div>
@@ -31,14 +54,37 @@
       <div class="container">
         <span class="title">Watch out! Your time is ticking!</span>
         <ul>
-          <li class="btn" name="resume">RESUME</li>
-          <li class="btn" name="surrender">SURRENDER</li>
-          <li class="btn" name="settingsInGame">SETTINGS</li>
+          <li class="btn" name="resume"><span>RESUME</span></li>
+          <li class="btn" name="surrender"><span>SURRENDER</span></li>
+          <li class="btn" name="settingsInGame" onclick = "openFullscreen();"><span>SETTINGS</span></li>
+          <li class="btn" name="statistics"><span>STATISTICS</span></li>
         </ul>
       </div>
     </div>
+    <div id="statPage">
+          <div class="container">
+            <span class="title">Statistics</span>
+            <ul>
+              <li class="btn" name="backtopause"><span>BACK TO MENU</span></li>
+            </ul>
+          </div>
+        </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="/javascripts/menu.js"></script>
+    <script>
+    var elem = document.getElementById("pauseMenu");
+    function openFullscreen() {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    }
+    </script>
     <script type="module" src="/javascripts/gameLogic.js"></script>
   </body>
 </html>
