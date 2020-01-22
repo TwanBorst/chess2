@@ -60,9 +60,12 @@ server.onmessage = serverMessageHandler;
 window.game = game;
 // @ts-ignore
 window.server = server;
+
 export {game, server};
 
 // TODO: Turns still need to be implemented.
 // TODO: Receiving other players moves and executing them still needs to be implemented.
 // TODO: Make menu buttons functional. (In a menu.js module file)
 // TODO: Database and user system???
+
+
