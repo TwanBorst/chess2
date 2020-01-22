@@ -28,8 +28,7 @@
     <script src="https://kit.fontawesome.com/cec035b7c9.js" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <body >
-  <div class="cookie" onload="checkCookie"></div>
+  <body>
     <div id="game">
       <div id="navigationBar">
         <span class="title">CHESS²</span>
@@ -43,13 +42,15 @@
     <div id="mainMenu">
       <div class = "grid">
         <div class = "tutorial">
-        <span class="title">HOW TO PLAY</span>
-         <iframe src="https://www.youtube.com/embed/JrRVm9lRpfM?autoplay=1&rel=0&amp;showinfo=0"></iframe>
+         <div class="fullscreen" onclick ="openFullscreen()";>FULL SCREEN</div>
+         <span class="title">HOW TO PLAY
+         <iframe src="https://www.youtube.com/embed/JrRVm9lRpfM?=1&rel=0&amp;showinfo=0"></iframe>
+         </span>
         </div>
         <div class="options">
          <span class="title">CHESS²</span>
          <ul>
-          <li class="btn" name="playNow"><span>PLAY NOW</span></li>
+          <li class="btn" name="playNow" onclick ="sound.play()";><span>PLAY NOW</span></li>
           <li class="btn" name="setupGame"><span>SETUP GAME</span></li>
           <li class="btn" name="rankings"><span>RANKINGS</span></li>
           <li class="btn" name="settings"><span>SETTINGS</span></li>
@@ -62,10 +63,10 @@
       <div class="container">
         <span class="title">Watch out! Your time is ticking!</span>
         <ul>
-          <li class="btn" name="resume"><span>RESUME</span></li>
+          <li class="btn" name="resume" onclick ="sound.play()"><span>RESUME</span></li>
           <li class="btn" name="surrender"><span>SURRENDER</span></li>
-          <li class="btn" name="settingsInGame" onclick ="openFullscreen"><span>SETTINGS</span></li>
           <li class="btn" name="statistics"><span>STATISTICS</span></li>
+          <li class="btn" onclick="openFullscreen()";><span>FULL SCREEN</span></li>
         </ul>
       </div>
     </div>
@@ -77,8 +78,6 @@
             </ul>
           </div>
         </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/javascripts/menu.js"></script>
     <div id="pawnMenu">
       <div class="container">
         <span class="title">You can upgrade your pawn. Choose wisely!</span>
@@ -91,6 +90,85 @@
         </ul>
       </div>
     </div>
+    <script>
+    var sound = new Audio();
+    sound.src = "sound.mp3";
+    </script>
+    <script>
+    var elem = document.body;
+    function openFullscreen() {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    }
+    </script>
+    <script>
+
+
+function getCookieValue (input) {
+    var endOfCookie = document.cookie.indexOf (";", input);
+    if (endOfCookie == -1)
+        endOfCookie = document.cookie.length;
+    return unescape(document.cookie.substring(input, endOfCookie));
+}
+
+function retrieve (name) {
+    var arg = name + "=";
+    var alen = arg.length;
+    var clen = document.cookie.length;
+    var i = 0;
+    while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg)
+            return getCookieValue (j);
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0)
+            break;
+    }
+    return null;
+}
+
+function setCookie (name, value) {
+    var argument = setCookie.arguments;
+    var argumentLength = setCookie.arguments.length;
+    var expires = (2 < argumentLength) ? argument[2] : null;
+    var path = (3 < argumentLength) ? argument[3] : null;
+    var domain = (4 < argumentLength) ? argument[4] : null;
+    var secure = (5 < argumentLength) ? argument[5] : false;
+    document.cookie = name + "=" + escape (value) +
+        ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +
+        ((path == null) ? "" : ("; path=" + path)) +
+        ((domain == null) ? "" : ("; domain=" + domain)) +
+        ((secure == true) ? "; secure" : "");
+}
+
+function showCookie() {
+    var expiryDate = new Date();
+    var noOfVisits;
+    expiryDate.setTime(expiryDate.getTime() +  (24 * 60 * 60 * 1000));
+    if(!(noOfVisits = retrieve("noOfVisits")))
+        noOfVisits = 0;
+    noOfVisits++;
+    setCookie("noOfVisits", noOfVisits, expiryDate, "/", null, false);
+    alert("\n"+"You have visited "+" "+noOfVisits+" time(s) "+"in one day\n"+"\n");
+}
+
+function reset() {
+    var expiryDate = new Date();
+    expiryDate.setTime(expiryDate.getTime() +  (24 * 60 * 60 * 1000 * 365));
+    noOfVisits = 0;
+    setCookie("noOfVisits", noOfVisits, expiryDate , "/", null, false);
+    history.go(0);
+    }
+
+    window.onload=showCookie
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="module" src="/javascripts/menu.js"></script>
     <script type="module" src="/javascripts/gameLogic.js"></script>
