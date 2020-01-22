@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+
+
   <head>
   <style>
  .btn span {
@@ -33,7 +35,11 @@
       <div id="navigationBar">
         <span class="title">CHESS²</span>
         <span class="btn" name="pause">
-          <i class="fas fa-bars"></i>
+          <svg style="display: block;" viewBox="0 0 448 512">
+            <path fill="currentColor"
+            d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z">
+            </path>
+          </svg>
         </span>
       </div>
       <div class="gameboard"></div>
@@ -78,6 +84,20 @@
             </ul>
           </div>
         </div>
+    <script>
+    var elem = document.getElementById("pauseMenu");
+    function openFullscreen() {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    }
+    </script>
     <div id="pawnMenu">
       <div class="container">
         <span class="title">You can upgrade your pawn. Choose wisely!</span>
@@ -111,14 +131,14 @@
     <script>
 
 
-function getCookieValue (input) {
+    function getCookieValue (input) {
     var endOfCookie = document.cookie.indexOf (";", input);
     if (endOfCookie == -1)
         endOfCookie = document.cookie.length;
     return unescape(document.cookie.substring(input, endOfCookie));
-}
+    }
 
-function retrieve (name) {
+    function retrieve (name) {
     var arg = name + "=";
     var alen = arg.length;
     var clen = document.cookie.length;
@@ -132,9 +152,9 @@ function retrieve (name) {
             break;
     }
     return null;
-}
+    }
 
-function setCookie (name, value) {
+    function setCookie (name, value) {
     var argument = setCookie.arguments;
     var argumentLength = setCookie.arguments.length;
     var expires = (2 < argumentLength) ? argument[2] : null;
@@ -146,9 +166,9 @@ function setCookie (name, value) {
         ((path == null) ? "" : ("; path=" + path)) +
         ((domain == null) ? "" : ("; domain=" + domain)) +
         ((secure == true) ? "; secure" : "");
-}
+    }
 
-function showCookie() {
+    function showCookie() {
     var expiryDate = new Date();
     var noOfVisits;
     expiryDate.setTime(expiryDate.getTime() +  (24 * 60 * 60 * 1000));
@@ -157,9 +177,9 @@ function showCookie() {
     noOfVisits++;
     setCookie("noOfVisits", noOfVisits, expiryDate, "/", null, false);
     alert("\n"+"You have visited "+" "+noOfVisits+" time(s) "+"in one day\n"+"\n");
-}
+    }
 
-function reset() {
+    function reset() {
     var expiryDate = new Date();
     expiryDate.setTime(expiryDate.getTime() +  (24 * 60 * 60 * 1000 * 365));
     noOfVisits = 0;
@@ -173,4 +193,17 @@ function reset() {
     <script type="module" src="/javascripts/menu.js"></script>
     <script type="module" src="/javascripts/gameLogic.js"></script>
   </body>
+</html>
+  </div>
+  <div id="SmallScreenWarning">
+    <div class="container">
+      <span class="title">Your screen is not big enough to play this game properly!<br>You may experience menu's not
+        fully visible.<br>Please resize your window or use another device.</span>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="module" src="/javascripts/menu.js"></script>
+  <script type="module" src="/javascripts/gameLogic.js"></script>
+</body>
+
 </html>
