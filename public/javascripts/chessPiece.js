@@ -1,5 +1,7 @@
 import {clickChessPieceEventHandler} from "./eventHandler.js";
 import {game} from "./gameLogic.js";
+import {Tile, convertFromPlayerCO, TileSafeForKing} from "./gameBoard.js";
+
 export class ChessPiece {
     constructor(tile, player, chessPieceType){
         this.tile = tile;
@@ -9,6 +11,7 @@ export class ChessPiece {
         this.tile.free = false;
         this.tile.chessPiece = this;
         this.hasMoved = false;
+        this.points = this.chessPieceType.points;
         
         this.element = $('<div>');
         this.element.append(this.chessPieceType.element.clone());
@@ -17,11 +20,24 @@ export class ChessPiece {
         
         this.moveToTile(this.tile, false);
 
-        this.element.click({chesspiece: this}, clickChessPieceEventHandler);
+        this.element.on("click", {chesspiece: this}, clickChessPieceEventHandler);
 
         $('#game .chesspieces').append(this.element);
         
     }
+    playerDead(){
+        if(this.chessPieceType.name!="king"){
+            this.points = 0;
+        }
+        // The chesspieces only turn black if the chesspieces were viewed before this event.
+        this.element.children().last().attr('player', -1);
+    }
+
+    /**
+     * Move this chesspiece to another tile.
+     * @param {Tile} tile
+     * @param {boolean} [hasMoved=true]
+     */
     moveToTile(tile, hasMoved=true){
         this.tile.free = true;
         this.tile.chessPiece = null;
@@ -51,6 +67,10 @@ export class ChessPieceType {
 }
 
 export let pawn = new ChessPieceType("pawn", 1, function(move){
+    // This move validator can only validate moves for pawns of window.player, so we convert the tiles in the move to the corresponding tiles of player window.player to make this also work for other players.
+    move.from = convertFromPlayerCO(move.chessPiece.player, move.from);
+    move.to = convertFromPlayerCO(move.chessPiece.player, move.to);
+
     if((move.from.y == move.to.y+1) && (Math.abs(move.from.x-move.to.x) == 1)){
         return (move.to.chessPiece!=null) && (!move.to.chessPiece.player.you);
     } else if(move.chessPiece.hasMoved){
@@ -104,7 +124,7 @@ export let knight = new ChessPieceType("knight", 3, function(move){
 }, $("<i>", {"class": "fas fa-chess-knight"}));
 
 export let king = new ChessPieceType("king", 20, function(move){
-    return Math.abs(move.from.x-move.to.x)<2&&Math.abs(move.from.y-move.to.y)<2;
+    return Math.abs(move.from.x-move.to.x)<2&&Math.abs(move.from.y-move.to.y)<2&&TileSafeForKing(move.chessPiece.player, move.to);
 }, $("<i>", {"class": "fas fa-chess-king"}));
 
 export let queen = new ChessPieceType("queen", 9, function(move){
@@ -119,3 +139,4 @@ export let queen = new ChessPieceType("queen", 9, function(move){
 
 export let promotedQueen = new ChessPieceType("promotedQueen", 1, queen.moveValidator, $("<i>", {"class": "fas fa-chess-queen"}));
 
+export let ChessPieceTypes = {pawn: pawn, bishop: bishop, rook: rook, knight: knight, king: king, queen: queen, promotedQueen: promotedQueen};

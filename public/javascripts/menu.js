@@ -1,8 +1,12 @@
+import { Game } from "./gameLogic.js";
+
 $('.btn[name="playNow"]').click(()=>{
     $('#mainMenu').css('top', '-100%');
     $('#game #navigationBar span.title').toggle();
     $('#game #navigationBar span.btn').toggle();
-    window.server.send(JSON.stringify({type: 'lobby', lobby: 'public'}));
+    Game.startGame();
+    // @ts-ignore
+    window.server.send(JSON.stringify({type: 'lobby', data: 'public'}));
 });
 
 $('.btn[name="pause"]').click(()=>{
