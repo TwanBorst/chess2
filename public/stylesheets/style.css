@@ -58,6 +58,19 @@ body {
   transition-duration: 0.5s;
   overflow:hidden;
 }
+#statPage{
+  background: black;
+  position:absolute;
+  left: 0;
+  top: 100%;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  color: white;
+  opacity: 0.9;
+  transition-property: top;
+  transition-duration: 0.5s;
+}
 
 #game #navigationBar{
  background-color: #272727;
@@ -98,6 +111,10 @@ body {
 }
 #game .chesspieces{
   pointer-events: none;
+}
+
+#game .chesspieces div svg:hover {
+  background-color: #B38FF3;
 }
 
 #game .chesspieces div{
@@ -180,12 +197,12 @@ body {
 }
 
 #pauseMenu .container{
-  margin: 0 auto;
-  width: fit-content;
-  text-align: center;
-  padding-top: 10vh;
-  font-size: 3rem;
-}
+   margin: 0 auto;
+   width: fit-content;
+   text-align: center;
+   padding-top: 10vh;
+   font-size: 3rem;
+ }
 
 #pauseMenu .container span.title{
   font-weight: 600;
@@ -199,6 +216,29 @@ body {
 #pauseMenu .container ul li{
   display: block;
   margin: 10% 0;
+  cursor: pointer;
+}
+
+#statPage .container{
+  margin: 0 auto;
+  width: fit-content;
+  text-align: center;
+  padding-top: 10vh;
+  font-size: 3rem;
+}
+
+#statPage .container span.title{
+  font-weight: 600;
+  font-style: italic;
+  text-decoration: underline;
+  font-size: 5rem;
+}
+#statPage .container ul{
+  padding: 0;
+}
+#statPage .container ul li{
+  display: block;
+  margin: 20% 0;
   cursor: pointer;
 }
 
