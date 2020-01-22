@@ -155,7 +155,7 @@ export function eightRowPawn(move) {
             $('#pawnMenu').css('top', '-100%');
 
             // @ts-ignore
-            window.server.send(JSON.stringify({ type: 'replace', data: { tile: { x: move.from.x, y: move.from.y}, type: move.chessPiece.chessPieceType.name } }));
+            window.server.send(JSON.stringify({ type: 'replace', data: { tile: { x: move.from.x, y: move.from.y }, type: move.chessPiece.chessPieceType.name } }));
 
             // @ts-ignore
             window.server.send(JSON.stringify({ type: 'move', data: { from: { x: move.from.x, y: move.from.y }, to: { x: move.to.x, y: move.to.y } } }));
@@ -327,11 +327,13 @@ $(window).resize(function () {
     $('#game .chesspieces').height($('#game .gameboard').height());
     $('#game .chesspieces').width($('#game .gameboard').width());
     $('#game .chesspieces svg').css('font-size', $('#game .chesspieces').height() / 14).width($('#game .chesspieces').height() / 14).height($('#game .chesspieces').height() / 14);
-    game.players.forEach(function (player) {
-        player.chessPieces.forEach(function (chesspiece) {
-            chesspiece.moveToTile(chesspiece.tile);
+    if (game != null) {
+        game.players.forEach(function (player) {
+            player.chessPieces.forEach(function (chesspiece) {
+                chesspiece.moveToTile(chesspiece.tile);
+            });
         });
-    });
+    }
 });
 
 // TODO: Player stats still need to be showed to the players. (collapsable boxes?)

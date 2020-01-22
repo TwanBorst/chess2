@@ -1,4 +1,37 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,600i&display=swap');
+/* Screen to small warning */
+@media screen and (max-width: 1366px), screen and (max-height: 768px){
+  #SmallScreenWarning{
+    background-color: black;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 105;
+    overflow: hidden;
+    opacity: 0.9;
+  }
+  #SmallScreenWarning .container{
+    margin: 0 auto;
+    width: fit-content;
+    text-align: center;
+    padding-top: 10vh;
+    font-size: 3rem;
+  }
+  #SmallScreenWarning .container span.title{
+    font-weight: 600;
+    font-style: italic;
+    text-decoration: underline;
+    font-size: 2rem;
+  }
+}
+@media screen and (min-width: 1367px) and (min-height: 769px){
+  #SmallScreenWarning{
+    display: none;
+  }
+}
 
 body {
   margin:0;
