@@ -28,10 +28,17 @@ $('.btn[name="backtopause"]').click(()=>{
     $('#game #navigationBar span.btn').toggle();
 });
 
+$('.btn[name="backtomain"]').click(()=>{
+    $('#mainMenu').css('top', '0');
+    $('#game #navigationBar span.title').toggle();
+    $('#game #navigationBar span.btn').toggle();
+});
+
 $('.btn[name="statistics"]').click(()=>{
     $('#pauseMenu').css('top', '-100%');
     $('#statPage').css('top', '0');
     $('#game #statPage span.title').toggle();
     $('#game #statPage span.btn').toggle();
 });
+
 
