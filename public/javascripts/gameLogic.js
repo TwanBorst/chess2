@@ -60,9 +60,82 @@ server.onmessage = serverMessageHandler;
 window.game = game;
 // @ts-ignore
 window.server = server;
+//
+// function setCookie(cname, cvalue, exdays) {
+//     var d = new Date();
+//     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+//     var expires = "expires="+d.toUTCString();
+//     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+// }
+//
+// function getCookie(cname) {
+//     var name = cname + "=";
+//     var ca = document.cookie.split(';');
+//     for(var i = 0; i < ca.length; i++) {
+//         var c = ca[i];
+//         while (c.charAt(0) == ' ') {
+//             c = c.substring(1);
+//         }
+//         if (c.indexOf(name) == 0) {
+//             return c.substring(name.length, c.length);
+//         }
+//     }
+//     return "";
+// }
+//
+// function checkCookie() {
+//     var user = getCookie("username");
+//     if (user != "") {
+//         alert("Welcome again " + user);
+//     } else {
+//         user = prompt("Please enter your name:", "");
+//         if (user != "" && user != null) {
+//             setCookie("username", user, 365);
+//         }
+//     }
+// }
+
+// function setCookie() {
+//     let date = new Date();
+//     let cookieName = "Cookie";
+//     date.setTime(d.getTime() + (24 * 60 * 60 * 1000));
+//     let expires = "expires=" + date.toUTCString();
+//     document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+//     let cookieValue = document.cookie;
+//     let start = cookieValue.indexOf(" " + cookieName + "=");
+//     if (cookieValue != "") {
+//         start = cookieValue.indexOf("=", start) + 1;
+//         let end = cookieValue.indexOf(";", start);
+//         if (end == -1) {
+//             end = cookieValue.length;
+//         }
+//         cookieValue = prompt("The number of time you have visited in one day:", unescape(cookieValue.substring(start, end)));
+//     }
+//
+//     return cookieValue;
+// }
+//
+// window.checkCookie = checkCookie;
+//
+// let elem = document.getElementById("pauseMenu");
+// async function openFullscreen(){
+//     if (elem.requestFullscreen) {
+//         await elem.requestFullscreen();
+//     } else if (elem.mozRequestFullScreen) { /* Firefox */
+//         await elem.mozRequestFullScreen();
+//     } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+//         await elem.webkitRequestFullscreen();
+//     } else if (elem.msRequestFullscreen) { /* IE/Edge */
+//         await elem.msRequestFullscreen();
+//     }
+// }
+// window.openFullscreen = openFullscreen;
+
 export {game, server};
 
 // TODO: Turns still need to be implemented.
 // TODO: Receiving other players moves and executing them still needs to be implemented.
 // TODO: Make menu buttons functional. (In a menu.js module file)
 // TODO: Database and user system???
+
+

@@ -28,7 +28,8 @@
     <script src="https://kit.fontawesome.com/cec035b7c9.js" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <body>
+  <body >
+  <div class="cookie" onload="checkCookie"></div>
     <div id="game">
       <div id="navigationBar">
         <span class="title">CHESS²</span>
@@ -63,7 +64,7 @@
         <ul>
           <li class="btn" name="resume"><span>RESUME</span></li>
           <li class="btn" name="surrender"><span>SURRENDER</span></li>
-          <li class="btn" name="settingsInGame" onclick = "openFullscreen();"><span>SETTINGS</span></li>
+          <li class="btn" name="settingsInGame" onclick ="openFullscreen"><span>SETTINGS</span></li>
           <li class="btn" name="statistics"><span>STATISTICS</span></li>
         </ul>
       </div>
@@ -78,20 +79,6 @@
         </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="/javascripts/menu.js"></script>
-    <script>
-    var elem = document.getElementById("pauseMenu");
-    function openFullscreen() {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) { /* Firefox */
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { /* IE/Edge */
-        elem.msRequestFullscreen();
-      }
-    }
-    </script>
     <div id="pawnMenu">
       <div class="container">
         <span class="title">You can upgrade your pawn. Choose wisely!</span>
