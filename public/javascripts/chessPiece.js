@@ -11,6 +11,7 @@ export class ChessPiece {
         this.tile.free = false;
         this.tile.chessPiece = this;
         this.hasMoved = false;
+        this.points = this.chessPieceType.points;
         
         this.element = $('<div>');
         this.element.append(this.chessPieceType.element.clone());
@@ -26,7 +27,7 @@ export class ChessPiece {
     }
     playerDead(){
         if(this.chessPieceType.name!="king"){
-            this.chessPieceType.points = 0;
+            this.points = 0;
         }
         // The chesspieces only turn black if the chesspieces were viewed before this event.
         this.element.children().last().attr('player', -1);
@@ -138,3 +139,4 @@ export let queen = new ChessPieceType("queen", 9, function(move){
 
 export let promotedQueen = new ChessPieceType("promotedQueen", 1, queen.moveValidator, $("<i>", {"class": "fas fa-chess-queen"}));
 
+export let ChessPieceTypes = {pawn: pawn, bishop: bishop, rook: rook, knight: knight, king: king, queen: queen, promotedQueen: promotedQueen};

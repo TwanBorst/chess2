@@ -1,5 +1,6 @@
 import { Move, convertToPlayerCO, GetCheckingChesspieces, TileSafeForKing, KingSafeAfterMove } from "./gameBoard.js";
 import { server, game } from "./gameLogic.js";
+import { ChessPieceTypes, ChessPiece } from "./chessPiece.js";
 
 /**
  * Select chess piece event
@@ -77,9 +78,9 @@ export function serverMessageHandler(event) {
         let to = convertToPlayerCO(player, game.gameboard[message.data.move.to.x][message.data.move.to.y]);
         if (from.chessPiece != null) {
             if (to.chessPiece != null) {
-                player.points += to.chessPiece.chessPieceType.points;
+                player.points += to.chessPiece.points;
                 to.chessPiece.removeFromGame();
-                console.log(player.name + " has earned " + to.chessPiece.chessPieceType.points + " points and now has a total of " + player.points + " points!");
+                console.log(player.name + " has earned " + to.chessPiece.points + " points and now has a total of " + player.points + " points!");
             }
             from.chessPiece.moveToTile(to);
         }
@@ -97,6 +98,12 @@ export function serverMessageHandler(event) {
     } else if (message.type == "gameOver"){
         // TODO: Show Game over screen with points, who won and a return to menu button.
         $('#mainMenu').css('top', '0');
+    } else if (message.type == "replace"){
+        let player = game.players.find(e => e.playerNumber == message.data.player);
+        let tile = convertToPlayerCO(player, game.gameboard[message.data.tile.x][message.data.tile.y]);
+        tile.chessPiece.removeFromGame();
+        tile.chessPiece = new ChessPiece(tile, player, ChessPieceTypes[message.data.type]);
+        player.chessPieces.push(tile.chessPiece);
     }
 }
 
