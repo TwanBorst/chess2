@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,600i&display=swap');
 /* Screen to small warning */
-@media screen and (max-width: 1366px), screen and (max-height: 768px){
+/* @media screen and (max-width: 1366px), screen and (max-height: 768px){
   #SmallScreenWarning{
     background-color: black;
     color: white;
@@ -26,7 +26,7 @@
     text-decoration: underline;
     font-size: 2rem;
   }
-}
+} */
 @media screen and (min-width: 1367px) and (min-height: 769px){
   #SmallScreenWarning{
     display: none;
