@@ -122,7 +122,7 @@ export class Player {
                     player.sendMessage({ type: 'move', data: { player: this.playerNumber, move: message.data } });
                 }
             });
-            this.game.giveTurn(this.game.playersTurn.getNext().element);
+            this.game.giveTurn(this.game.playersTurn.nextTurn());
         } else if (message.type == "checkmate") {
             if (this.game == null) {
                 return;
@@ -137,11 +137,20 @@ export class Player {
             });
             this.dead = true;
             if(this.game.players.filter(p=>{return p.dead==false&&p.left==false;}).length>1){
-                this.game.giveTurn(this.game.playersTurn.getNext().element);
-                this.game.playersTurn.remove(this);
+                this.game.giveTurn(this.game.playersTurn.nextTurn());
+                this.game.playersTurn.removePlayer(this);
             } else {
                this.game.gameOver();
             }
+        } else if (message.type == "replace") {
+            if (this.game == null) {
+                return;
+            }
+            this.game.players.forEach((player)=>{
+                if(player != this){
+                    player.sendMessage({type: 'replace', data: {player: this.playerNumber, tile: message.data.tile, type: message.data.type}});
+                }
+            });
         }
     }
     toClient() {

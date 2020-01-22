@@ -1,6 +1,6 @@
 import { game } from "./gameLogic.js";
 import { clickTileEventHandler } from "./eventHandler.js";
-import { ChessPiece } from "./chessPiece.js";
+import { ChessPiece, pawn, queen, knight, bishop, rook, promotedQueen, ChessPieceTypes } from "./chessPiece.js";
 import { Player } from "./player.js";
 
 /**
@@ -123,20 +123,51 @@ export class Move {
     execute() {
         if (this.to.chessPiece != null) {
             // @ts-ignore
-            window.player.points += this.to.chessPiece.chessPieceType.points;
+            window.player.points += this.to.chessPiece.points;
             this.to.chessPiece.removeFromGame();
             // @ts-ignore
-            console.log("You have earned " + this.to.chessPiece.chessPieceType.points + " points and you now have a total of " + window.player.points + " points!");
+            console.log("You have earned " + this.to.chessPiece.points + " points and you now have a total of " + window.player.points + " points!");
         }
         this.chessPiece.moveToTile(this.to);
         this.chessPiece.player.yourTurn = false;
 
         $('.tile.green').removeClass('green');
 
-        // @ts-ignore
-        window.server.send(JSON.stringify({ type: 'move', data: { from: { x: this.from.x, y: this.from.y }, to: { x: this.to.x, y: this.to.y } } }));
+        // If eightRowPawn returns true, then it will take care of sending the move and replacing the chessPiece.
+        if (!eightRowPawn(this)) {
+            // @ts-ignore
+            window.server.send(JSON.stringify({ type: 'move', data: { from: { x: this.from.x, y: this.from.y }, to: { x: this.to.x, y: this.to.y } } }));
+        }
     }
 }
+
+/**
+ * Check for eightRowPawn rule
+ * @param {Move} move
+ */
+export function eightRowPawn(move) {
+    if (move.chessPiece.chessPieceType.name == "pawn" && move.to.y == 3) {
+        $('#pawnMenu .btn').one('click', (e) => {
+            let original = move.chessPiece;
+            move.chessPiece = new ChessPiece(move.to, original.player, ChessPieceTypes[e.currentTarget.attributes['name'].value]);
+            move.chessPiece.player.chessPieces.push(move.chessPiece);
+            original.removeFromGame();
+            $('#pawnMenu').css('top', '-100%');
+
+            // @ts-ignore
+            window.server.send(JSON.stringify({ type: 'replace', data: { tile: { x: move.from.x, y: move.from.y}, type: move.chessPiece.chessPieceType.name } }));
+
+            // @ts-ignore
+            window.server.send(JSON.stringify({ type: 'move', data: { from: { x: move.from.x, y: move.from.y }, to: { x: move.to.x, y: move.to.y } } }));
+
+        });
+        $('#pawnMenu').css('top', '0');
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /**
  * Check whether a certain player can attack your king next move.
  *
@@ -194,7 +225,7 @@ export function GetCheckingChesspieces() {
  * @param {Tile} tile Tile to check
  */
 export function TileSafeForKing(player, tile) {
-    return !game.players.filter(p=>{return !p.dead;}).some(p => {
+    return !game.players.filter(p => { return !p.dead; }).some(p => {
         if (p != player) {
             return p.chessPieces.some(c => {
                 return c.chessPieceType.moveValidator({ from: c.tile, to: tile, chessPiece: c });
