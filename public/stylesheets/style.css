@@ -129,6 +129,27 @@ body {
   height: calc(100% - 2rem - 10px);
   margin: 0 auto;
 }
+#game .playerFrame{
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+#game .playerFrame[player="1"]{
+  color: #992d00; 
+}
+#game .playerFrame[player="2"]{
+  color: #3c65ff;
+}
+#game .playerFrame[player="3"]{
+  color: #e3cd05;
+}
+#game .playerFrame[player="4"]{
+  color: #408700;
+}
+#game .playerFrame[player="-1"]{
+  color: #242424;
+}
 #game .chesspieces{
   pointer-events: none;
 }

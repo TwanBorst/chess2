@@ -318,6 +318,23 @@ export function convertFromPlayerCO(player, tile) {
     }
 }
 
+export function windowPos(player){
+    // @ts-ignore
+    let you = window.player.playerNumber;
+    if (you < player.playerNumber) {
+        you += 4;
+    }
+    if (player.you) {
+        return game.gameboard[0][11];
+    } else if (you - 1 == player.playerNumber) {
+        return game.gameboard[11][11];
+    } else if (you - 2 == player.playerNumber) {
+        return game.gameboard[11][0];
+    } else {
+        return game.gameboard[0][0];
+    }
+}
+
 // Equal width to height
 $('#game .gameboard').width($('#game .gameboard').height());
 $('#game .chesspieces').height($('#game .gameboard').height());
