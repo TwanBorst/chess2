@@ -4,9 +4,20 @@ $('.btn[name="playNow"]').click(()=>{
     $('#mainMenu').css('top', '-100%');
     $('#game #navigationBar span.title').toggle();
     $('#game #navigationBar span.btn').toggle();
-    Game.startGame();
+    $('#insertName').css('top', '0');
+});
+
+$('#insertName button').click(()=>{
+    let name = $('#insertName input').first().val();
     // @ts-ignore
-    window.server.send(JSON.stringify({type: 'lobby', data: 'public'}));
+    if(name.length>0){
+        Game.startGame();
+        // @ts-ignore
+        window.server.send(JSON.stringify({type: 'setName', data: name}));
+        // @ts-ignore
+        window.server.send(JSON.stringify({type: 'lobby', data: 'public'}));
+        $('#insertName').css('top', '-100%');
+    }
 });
 
 $('.btn[name="pause"]').click(()=>{

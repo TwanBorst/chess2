@@ -151,6 +151,24 @@ export class Player {
                     player.sendMessage({type: 'replace', data: {player: this.playerNumber, tile: message.data.tile, type: message.data.type}});
                 }
             });
+        } else if (message.type == "setName") {
+            this.playerID = message.data;
+        } else if (message.type == "timer") {
+            if(this.game == null){
+                return;
+            }
+            this.game.players.forEach((player)=>{
+                if(player != this){
+                    player.sendMessage({type: 'timer', data: message.data});
+                }
+            });
+            this.dead = true;
+            if(this.game.players.filter(p=>{return p.dead==false&&p.left==false;}).length>1){
+                this.game.giveTurn(this.game.playersTurn.nextTurn());
+                this.game.playersTurn.removePlayer(this);
+            } else {
+               this.game.gameOver();
+            }
         }
     }
     toClient() {

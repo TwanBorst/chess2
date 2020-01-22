@@ -1,6 +1,7 @@
 import { game, server } from "./gameLogic.js";
 import { ChessPiece, rook, knight, bishop, queen, king, pawn } from "./chessPiece.js";
 import { convertToPlayerCO, GetCheckingChesspieces, TileSafeForKing, KingSafeAfterMove, windowPos } from "./gameBoard.js";
+import { Timer } from "./timer.js";
 
 export class Player {
     /**
@@ -25,6 +26,7 @@ export class Player {
         this.yourTurn = false;
         this.checkMated = false;
         this.dead = false;
+        this.timer = null;
         this.createPieces();
         this.createWindow();
     }
@@ -33,6 +35,7 @@ export class Player {
      * Fired when player is defeated or left
      */
     playerDead() {
+        this.yourTurn = false;
         this.dead = true;
         this.chessPieces.forEach((chesspiece) => {
             chesspiece.playerDead();
@@ -157,11 +160,18 @@ export class Player {
     }
 
     createWindow(){
-        let element = $('<div class="playerFrame"><div class="name">'+this.name+'</div><div class="timer"></div><div class="points">'+this.points+'</div></div>');
+        this.timer = new Timer();
+        let timer = $('<div class="timer"></div>').append(this.timer.element);
+        let element = $('<div class="playerFrame"></div>');
+        let name = $('<div class="name">'+this.name+'</div>');
+        let points = $('<div class="points">'+this.points+'</div>');
         element.attr('player', this.playerNumber);
-        element.height($(windowPos(this).element).height()*3+'px');
+        element.height($(windowPos(this.playerNumber).element).height()*3+'px');
         element.width(element.height()+'px');
-        element.css('top', $(windowPos(this).element).position().top + 'px').css('left', $(windowPos(this).element).position().left + 'px');
+        element.css('top', $(windowPos(this.playerNumber).element).position().top + 'px').css('left', $(windowPos(this.playerNumber).element).position().left + 'px');
+        element.append(name);
+        element.append(timer);
+        element.append(points);
         $('#game').append(element);
     }
 }

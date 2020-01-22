@@ -64,7 +64,9 @@ export function serverMessageHandler(event) {
         game.players.forEach(player => {
             if (player.playerNumber == message.data) {
                 player.yourTurn = true;
-                return;
+                player.timer.start();
+            } else {
+                player.timer.stop();
             }
         });
         // @ts-ignore
@@ -79,6 +81,7 @@ export function serverMessageHandler(event) {
         if (from.chessPiece != null) {
             if (to.chessPiece != null) {
                 player.points += to.chessPiece.points;
+                $('.playerFrame[player='+player.playerNumber+'] .points').text(player.points);
                 to.chessPiece.removeFromGame();
                 console.log(player.name + " has earned " + to.chessPiece.points + " points and now has a total of " + player.points + " points!");
             }
@@ -91,6 +94,7 @@ export function serverMessageHandler(event) {
         message.data.players.forEach(n=>{
             let player = game.players.find(p=>{return p.playerNumber==n;});
             player.points += 20;
+            $('.playerFrame[player='+player.playerNumber+'] .points').text(player.points);
             console.log(player.name + " has earned 20 points for having a part in the checkmate of "+ checkmate.name +" and now has a total of " + player.points + " points!");
         });
         checkmate.chessPieces.find(c=>{return c.chessPieceType.name=="king";}).removeFromGame();
@@ -104,6 +108,10 @@ export function serverMessageHandler(event) {
         tile.chessPiece.removeFromGame();
         tile.chessPiece = new ChessPiece(tile, player, ChessPieceTypes[message.data.type]);
         player.chessPieces.push(tile.chessPiece);
+    } else if (message.type == "timer"){
+        let player = game.players.find(e => e.playerNumber == message.data);
+        player.timer.stop();
+        player.playerDead();
     }
 }
 
