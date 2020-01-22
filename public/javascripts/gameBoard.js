@@ -124,6 +124,8 @@ export class Move {
         if (this.to.chessPiece != null) {
             // @ts-ignore
             window.player.points += this.to.chessPiece.points;
+            // @ts-ignore
+            $('.playerFrame[player='+window.player.playerNumber+'] .points').text(window.player.points);
             this.to.chessPiece.removeFromGame();
             // @ts-ignore
             console.log("You have earned " + this.to.chessPiece.points + " points and you now have a total of " + window.player.points + " points!");
@@ -318,17 +320,17 @@ export function convertFromPlayerCO(player, tile) {
     }
 }
 
-export function windowPos(player){
+export function windowPos(playerNumber){
     // @ts-ignore
     let you = window.player.playerNumber;
-    if (you < player.playerNumber) {
+    if (you < playerNumber) {
         you += 4;
     }
-    if (player.you) {
+    if (you == playerNumber) {
         return game.gameboard[0][11];
-    } else if (you - 1 == player.playerNumber) {
+    } else if (you - 1 == playerNumber) {
         return game.gameboard[11][11];
-    } else if (you - 2 == player.playerNumber) {
+    } else if (you - 2 == playerNumber) {
         return game.gameboard[11][0];
     } else {
         return game.gameboard[0][0];
@@ -350,6 +352,12 @@ $(window).resize(function () {
                 chesspiece.moveToTile(chesspiece.tile);
             });
         });
+        $('#game .playerFrame').each((index, element)=>{
+            let playerNumber = $(element).attr('player');
+            $(element).height($(windowPos(playerNumber).element).height()*3+'px');
+            $(element).width($(element).height()+'px');
+            $(element).css('top', $(windowPos(playerNumber).element).position().top + 'px').css('left', $(windowPos(playerNumber).element).position().left + 'px');
+        })
     }
 });
 
