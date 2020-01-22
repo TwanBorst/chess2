@@ -1,6 +1,6 @@
 import { game, server } from "./gameLogic.js";
 import { ChessPiece, rook, knight, bishop, queen, king, pawn } from "./chessPiece.js";
-import { convertToPlayerCO, GetCheckingChesspieces, TileSafeForKing, KingSafeAfterMove } from "./gameBoard.js";
+import { convertToPlayerCO, GetCheckingChesspieces, TileSafeForKing, KingSafeAfterMove, windowPos } from "./gameBoard.js";
 
 export class Player {
     /**
@@ -26,6 +26,7 @@ export class Player {
         this.checkMated = false;
         this.dead = false;
         this.createPieces();
+        this.createWindow();
     }
 
     /**
@@ -154,5 +155,13 @@ export class Player {
         this.chessPieces.push(new ChessPiece(convertToPlayerCO(this, game.gameboard[9][12]), this, pawn));
         this.chessPieces.push(new ChessPiece(convertToPlayerCO(this, game.gameboard[10][12]), this, pawn));
     }
-}
 
+    createWindow(){
+        let element = $('<div class="playerFrame"><div class="name">'+this.name+'</div><div class="timer"></div><div class="points">'+this.points+'</div></div>');
+        element.attr('player', this.playerNumber);
+        element.height($(windowPos(this).element).height()*3+'px');
+        element.width(element.height()+'px');
+        element.css('top', $(windowPos(this).element).position().top + 'px').css('left', $(windowPos(this).element).position().left + 'px');
+        $('#game').append(element);
+    }
+}
