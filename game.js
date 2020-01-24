@@ -66,9 +66,16 @@ export class Game {
     }
 
     gameOver() {
+        let won = {player: -1, points: -1};
+        this.players.forEach((player)=>{
+            if(player.points > won.points){
+                won.player = player.playerNumber;
+                won.points = player.points;
+            }
+        });
         this.players.forEach(p => {
             if (p.left == false) {
-                p.sendMessage({ type: 'gameOver', data: {} });
+                p.sendMessage({ type: 'gameOver', data: won});
                 p.playing = false;
                 p.game = null;
                 p.points = 0;

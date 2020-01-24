@@ -105,10 +105,14 @@ export function serverMessageHandler(event) {
         checkmate.chessPieces.find(c => { return c.chessPieceType.name == "king"; }).removeFromGame();
         checkmate.playerDead();
     } else if (message.type == "gameOver") {
-        // TODO: Show Game over screen with points, who won and a return to menu button.
+        let player = game.players.find(p => { return p.playerNumber == message.data.player; });
+        $('#GameOver .won .player').text(player.you? "You":player.name);
+        $('#GameOver .won .points').text(message.data.points);
+        // @ts-ignore
+        $('#GameOver .yourStats .points').text(window.player.points);
+        $('#GameOver').css('top', '0');
         // @ts-ignore
         window.player.game.gameOver();
-        $('#mainMenu').css('top', '0');
     } else if (message.type == "replace") {
         let player = game.players.find(e => e.playerNumber == message.data.player);
         let tile = convertToPlayerCO(player, game.gameboard[message.data.tile.x][message.data.tile.y]);

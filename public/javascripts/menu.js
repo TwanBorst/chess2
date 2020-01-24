@@ -99,4 +99,9 @@ $('.btn[name="surrender"]').click(() => {
     $('#pauseMenu').css('top', '-100%');
 });
 
+$('.btn[name="exitGameOver"]').click(()=>{
+    $('#GameOver').css('top', '-100%');
+    $('#mainMenu').css('top', '0');
+});
+
 

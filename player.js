@@ -181,11 +181,13 @@ export class Player {
             this.dead = true;
             if (this.game.players.filter(p => { return p.dead == false && p.left == false; }).length <= 1) {
                 this.game.gameOver();
+            } else {
+                if (this.game.playersTurn.currentTurn() == this) {
+                    this.game.giveTurn(this.game.playersTurn.nextTurn());
+                    this.game.playersTurn.removePlayer(this);
+                }
             }
-            if(this.game.playersTurn.currentTurn()==this){
-                this.game.giveTurn(this.game.playersTurn.nextTurn());
-                this.game.playersTurn.removePlayer(this);
-            }
+
         }
     }
     toClient() {

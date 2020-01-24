@@ -432,6 +432,28 @@ body {
   width: 100%;
 }
 
+#GameOver{
+  background: black;
+  position:absolute;
+  left: 0;
+  top: -100%;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  color: white;
+  opacity: 0.9;
+  transition-property: top;
+  transition-duration: 0.5s;
+  overflow:hidden;
+  display: flex;
+  justify-content: center;
+  font-size: 3rem;
+}
+#GameOver .container{
+  align-self: center;
+  text-align: center;
+}
+
 @keyframes borderAnimation{
   from {border-width: 0.5vh;}
   to {border-width: 0.1vh;}
