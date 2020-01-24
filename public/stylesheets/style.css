@@ -41,6 +41,24 @@ body {
   width: 100%;
 }
 
+#fullscreen{
+  z-index: 500;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow:hidden;
+  color: white;
+  width: calc(2rem + 10px);
+  padding:5px;
+  box-sizing: border-box;
+}
+#fullscreen svg{
+  display: none;
+  align-self: center;
+  cursor: pointer;
+  height: 2rem;
+}
+
 #game{
   background-color: #312e2b;
   position:absolute;
@@ -132,7 +150,7 @@ body {
   align-self: center;
   cursor: pointer;
 }
-#game #navigationBar svg.fa-bars{
+#game #navigationBar svg{
   font-size: 2rem;
 }
 
@@ -238,47 +256,14 @@ body {
 }
 
 #mainMenu .grid .tutorial{
-  margin: 0 auto;
-  width: fit-content;
+  margin: auto auto;
   text-align: center;
-  font-size: 3rem;
-  grid-area: 1 / 1 / 2 / 2;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
 }
-
-#mainMenu .tutorial .fullscreen{
-  font-weight: 600;
-  font-style: italic;
-  font-size: 2rem;
-  grid-area: 1 / 1 / 2 / 2;
-  padding-top: 15vh;
-}
-
-#mainMenu .tutorial span.blank{
-   font-weight: 600;
-   font-style: italic;
-   font-size: 2rem;
- }
 
 #mainMenu .tutorial span.title{
   font-weight: 600;
   font-style: italic;
   font-size: 2rem;
-  padding-top: 18vh;
-}
-
-#mainMenu .tutorial ul{
-  padding: 0;
-}
-
-#mainMenu .tutorial ul li{
-  display: block;
-  margin: 20% 0;
-  cursor: pointer;
 }
 
 #mainMenu .grid .options{
@@ -287,7 +272,6 @@ body {
   text-align: center;
   padding-top: 10vh;
   font-size: 3rem;
-  grid-area: 1 / 2 / 2 / 3;
 }
 
 #mainMenu .grid .statistics{
@@ -398,19 +382,32 @@ body {
   transition-property: top;
   transition-duration: 0.5s;
   overflow:hidden;
+  display: flex;
+  justify-content: center;
 }
 
 #insertName .container{
-  margin: auto auto;
-  width: fit-content;
-  height: fit-content;
-  text-align: center;
-  font-size: 3rem;
+  align-self: center;
 }
-
+#insertName .loading{
+  display: none;
+  text-align: center;
+}
+#insertName .loading svg{
+  animation-name: loading;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  height: 4rem;
+}
 @keyframes borderAnimation{
   from {border-width: 0.5vh;}
   to {border-width: 0.1vh;}
+}
+
+@keyframes loading{
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
 }
 
 

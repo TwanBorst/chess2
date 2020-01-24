@@ -1,199 +1,111 @@
 <!DOCTYPE html>
 <html>
 
-
-  <head>
+<head>
   <style>
- .btn span {
-   cursor: pointer;
-   display: inline-block;
-   position: relative;
-   transition: 0.5s;
- }
- .btn span:after {
-   content: '\00bb';
-   position: absolute;
-   opacity: 0;
-   top: 0;
-   right: -20px;
-   transition: 0.5s;
- }
- .btn:hover span {
-   padding-right: 50px;
- }
- .btn:hover span:after {
-   opacity: 1;
-   right: 0;
- }
+    .btn span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .btn span:after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .btn:hover span {
+      padding-right: 50px;
+    }
+
+    .btn:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
   </style>
-    <title><%= title %></title>
-    <script src="https://kit.fontawesome.com/cec035b7c9.js" crossorigin="anonymous"></script>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <div id="game">
-      <div id="navigationBar">
-        <span class="title">CHESS²</span>
-        <span class="btn" name="pause">
-          <svg style="display: block;" viewBox="0 0 448 512">
-            <path fill="currentColor"
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <div id="fullscreen">
+    <svg class="btn" name="exitFullscreen" viewBox="0 0 512 512">
+      <path fill="currentColor"
+        d="M200 288H88c-21.4 0-32.1 25.8-17 41l32.9 31-99.2 99.3c-6.2 6.2-6.2 16.4 0 22.6l25.4 25.4c6.2 6.2 16.4 6.2 22.6 0L152 408l31.1 33c15.1 15.1 40.9 4.4 40.9-17V312c0-13.3-10.7-24-24-24zm112-64h112c21.4 0 32.1-25.9 17-41l-33-31 99.3-99.3c6.2-6.2 6.2-16.4 0-22.6L481.9 4.7c-6.2-6.2-16.4-6.2-22.6 0L360 104l-31.1-33C313.8 55.9 288 66.6 288 88v112c0 13.3 10.7 24 24 24zm96 136l33-31.1c15.1-15.1 4.4-40.9-17-40.9H312c-13.3 0-24 10.7-24 24v112c0 21.4 25.9 32.1 41 17l31-32.9 99.3 99.3c6.2 6.2 16.4 6.2 22.6 0l25.4-25.4c6.2-6.2 6.2-16.4 0-22.6L408 360zM183 71.1L152 104 52.7 4.7c-6.2-6.2-16.4-6.2-22.6 0L4.7 30.1c-6.2 6.2-6.2 16.4 0 22.6L104 152l-33 31.1C55.9 198.2 66.6 224 88 224h112c13.3 0 24-10.7 24-24V88c0-21.3-25.9-32-41-16.9z">
+      </path>
+    </svg>
+    <svg class="btn" style="display: inline;" name="fullscreen" viewBox="0 0 448 512">
+      <path fill="currentColor"
+        d="M448 344v112a23.94 23.94 0 0 1-24 24H312c-21.39 0-32.09-25.9-17-41l36.2-36.2L224 295.6 116.77 402.9 153 439c15.09 15.1 4.39 41-17 41H24a23.94 23.94 0 0 1-24-24V344c0-21.4 25.89-32.1 41-17l36.19 36.2L184.46 256 77.18 148.7 41 185c-15.1 15.1-41 4.4-41-17V56a23.94 23.94 0 0 1 24-24h112c21.39 0 32.09 25.9 17 41l-36.2 36.2L224 216.4l107.23-107.3L295 73c-15.09-15.1-4.39-41 17-41h112a23.94 23.94 0 0 1 24 24v112c0 21.4-25.89 32.1-41 17l-36.19-36.2L263.54 256l107.28 107.3L407 327.1c15.1-15.2 41-4.5 41 16.9z">
+      </path>
+    </svg>
+  </div>
+  <div id="game">
+    <div id="navigationBar">
+      <span class="title">CHESS²</span>
+      <span class="btn" name="pause">
+        <svg style="display: block;" viewBox="0 0 448 512">
+          <path fill="currentColor"
             d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z">
-            </path>
-          </svg>
-        </span>
-      </div>
-      <div class="gameboard"></div>
-      <div class="chesspieces"></div>
+          </path>
+        </svg>
+      </span>
     </div>
-    <div id="mainMenu">
-      <div class = "grid">
-        <div class = "tutorial">
-         <div class="fullscreen" onclick ="openFullscreen()";>FULL SCREEN</div>
-         <span class="title">HOW TO PLAY
-         <iframe src="https://www.youtube.com/embed/JrRVm9lRpfM?=1&rel=0&amp;showinfo=0"></iframe>
-         </span>
-        </div>
-        <div class="options">
-         <span class="title">CHESS²</span>
-         <ul>
-          <li class="btn" name="playNow" onclick ="sound.play()";><span>PLAY NOW</span></li>
+    <div class="gameboard"></div>
+    <div class="chesspieces"></div>
+  </div>
+  <div id="mainMenu">
+    <div class="grid">
+      <div class="tutorial">
+        <span class="title">HOW TO PLAY</span>
+        <iframe src="https://www.youtube.com/embed/JrRVm9lRpfM?=1&rel=0&amp;showinfo=0"></iframe>
+      </div>
+      <div class="options">
+        <span class="title">CHESS²</span>
+        <ul>
+          <li class="btn" name="playNow" onclick="sound.play()" ;><span>PLAY NOW</span></li>
           <li class="btn" name="setupGame"><span>SETUP GAME</span></li>
           <li class="btn" name="rankings"><span>RANKINGS</span></li>
           <li class="btn" name="settings"><span>SETTINGS</span></li>
-         </ul>
-        </div>
-      </div>
-      </div> 
-    </div>
-    <div id="pauseMenu">
-      <div class="container">
-        <span class="title">Watch out! Your time is ticking!</span>
-        <ul>
-          <li class="btn" name="resume" onclick ="sound.play()"><span>RESUME</span></li>
-          <li class="btn" name="surrender"><span>SURRENDER</span></li>
-          <li class="btn" name="statistics"><span>STATISTICS</span></li>
-          <li class="btn" onclick="openFullscreen()";><span>FULL SCREEN</span></li>
         </ul>
       </div>
     </div>
-    <div id="statPage">
-          <div class="container">
-            <span class="title">Statistics</span>
-            <ul>
-              <li class="btn" name="backtopause"><span>BACK TO MENU</span></li>
-            </ul>
-          </div>
-        </div>
-    <script>
-    var elem = document.getElementById("pauseMenu");
-    function openFullscreen() {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) { /* Firefox */
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { /* IE/Edge */
-        elem.msRequestFullscreen();
-      }
-    }
-    </script>
-    <div id="pawnMenu">
-      <div class="container">
-        <span class="title">You can upgrade your pawn. Choose wisely!</span>
-        <ul>
-          <li class="btn" name="pawn"><i class="fas fa-chess-pawn"></i></li>
-          <li class="btn" name="rook"><i class="fas fa-chess-rook"></i></li>
-          <li class="btn" name="bishop"><i class="fas fa-chess-bishop"></i></li>
-          <li class="btn" name="knight"><i class="fas fa-chess-knight"></i></li>
-          <li class="btn" name="promotedQueen"><i class="fas fa-chess-queen"></i></li>
-        </ul>
-      </div>
+  </div>
+  </div>
+  <div id="pauseMenu">
+    <div class="container">
+      <span class="title">Watch out! Your time is ticking!</span>
+      <ul>
+        <li class="btn" name="resume" onclick="sound.play()"><span>RESUME</span></li>
+        <li class="btn" name="surrender"><span>SURRENDER</span></li>
+        <li class="btn" name="statistics"><span>STATISTICS</span></li>
+      </ul>
     </div>
-    <script>
-    var sound = new Audio();
-    sound.src = "sound.mp3";
-    </script>
-    <script>
-    var elem = document.body;
-    function openFullscreen() {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) { /* Firefox */
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { /* IE/Edge */
-        elem.msRequestFullscreen();
-      }
-    }
-    </script>
-    <script>
-
-
-    function getCookieValue (input) {
-    var endOfCookie = document.cookie.indexOf (";", input);
-    if (endOfCookie == -1)
-        endOfCookie = document.cookie.length;
-    return unescape(document.cookie.substring(input, endOfCookie));
-    }
-
-    function retrieve (name) {
-    var arg = name + "=";
-    var alen = arg.length;
-    var clen = document.cookie.length;
-    var i = 0;
-    while (i < clen) {
-        var j = i + alen;
-        if (document.cookie.substring(i, j) == arg)
-            return getCookieValue (j);
-        i = document.cookie.indexOf(" ", i) + 1;
-        if (i == 0)
-            break;
-    }
-    return null;
-    }
-
-    function setCookie (name, value) {
-    var argument = setCookie.arguments;
-    var argumentLength = setCookie.arguments.length;
-    var expires = (2 < argumentLength) ? argument[2] : null;
-    var path = (3 < argumentLength) ? argument[3] : null;
-    var domain = (4 < argumentLength) ? argument[4] : null;
-    var secure = (5 < argumentLength) ? argument[5] : false;
-    document.cookie = name + "=" + escape (value) +
-        ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +
-        ((path == null) ? "" : ("; path=" + path)) +
-        ((domain == null) ? "" : ("; domain=" + domain)) +
-        ((secure == true) ? "; secure" : "");
-    }
-
-    function showCookie() {
-    var expiryDate = new Date();
-    var noOfVisits;
-    expiryDate.setTime(expiryDate.getTime() +  (24 * 60 * 60 * 1000));
-    if(!(noOfVisits = retrieve("noOfVisits")))
-        noOfVisits = 0;
-    noOfVisits++;
-    setCookie("noOfVisits", noOfVisits, expiryDate, "/", null, false);
-    alert("\n"+"You have visited "+" "+noOfVisits+" time(s) "+"in one day\n"+"\n");
-    }
-
-    function reset() {
-    var expiryDate = new Date();
-    expiryDate.setTime(expiryDate.getTime() +  (24 * 60 * 60 * 1000 * 365));
-    noOfVisits = 0;
-    setCookie("noOfVisits", noOfVisits, expiryDate , "/", null, false);
-    history.go(0);
-    }
-
-    window.onload=showCookie
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="module" src="/javascripts/menu.js"></script>
-    <script type="module" src="/javascripts/gameLogic.js"></script>
-  </body>
-</html>
+  </div>
+  <div id="statPage">
+    <div class="container">
+      <span class="title">Statistics</span>
+      <ul>
+        <li class="btn" name="backtopause"><span>BACK TO MENU</span></li>
+      </ul>
+    </div>
+  </div>
+  <div id="pawnMenu">
+    <div class="container">
+      <span class="title">You can upgrade your pawn. Choose wisely!</span>
+      <ul>
+        <li class="btn" name="pawn"><i class="fas fa-chess-pawn"></i></li>
+        <li class="btn" name="rook"><i class="fas fa-chess-rook"></i></li>
+        <li class="btn" name="bishop"><i class="fas fa-chess-bishop"></i></li>
+        <li class="btn" name="knight"><i class="fas fa-chess-knight"></i></li>
+        <li class="btn" name="promotedQueen"><i class="fas fa-chess-queen"></i></li>
+      </ul>
+    </div>
   </div>
   <div id="SmallScreenWarning">
     <div class="container">
@@ -203,10 +115,82 @@
   </div>
   <div id="insertName">
     <div class="container">
-      <input name="username" type="text" maxlength="30"/>
-      <button>Enter username!</button>
+      <span class="username">
+        <input name="username" type="text" maxlength="30" />
+        <button>Enter username!</button>
+      </span>
+      <div class="loading">Your in the queue!</div>
+      <div class="loading">
+        <svg viewBox="0 0 512 512">
+          <path fill="currentColor"
+            d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z">
+          </path>
+        </svg>
+      </div>
     </div>
   </div>
+  <script>
+    var sound = new Audio();
+    sound.src = "sound.mp3";
+
+    function getCookieValue(input) {
+      var endOfCookie = document.cookie.indexOf(";", input);
+      if (endOfCookie == -1)
+        endOfCookie = document.cookie.length;
+      return unescape(document.cookie.substring(input, endOfCookie));
+    }
+
+    function retrieve(name) {
+      var arg = name + "=";
+      var alen = arg.length;
+      var clen = document.cookie.length;
+      var i = 0;
+      while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg)
+          return getCookieValue(j);
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0)
+          break;
+      }
+      return null;
+    }
+
+    function setCookie(name, value) {
+      var argument = setCookie.arguments;
+      var argumentLength = setCookie.arguments.length;
+      var expires = (2 < argumentLength) ? argument[2] : null;
+      var path = (3 < argumentLength) ? argument[3] : null;
+      var domain = (4 < argumentLength) ? argument[4] : null;
+      var secure = (5 < argumentLength) ? argument[5] : false;
+      document.cookie = name + "=" + escape(value) +
+        ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +
+        ((path == null) ? "" : ("; path=" + path)) +
+        ((domain == null) ? "" : ("; domain=" + domain)) +
+        ((secure == true) ? "; secure" : "");
+    }
+
+    function showCookie() {
+      var expiryDate = new Date();
+      var noOfVisits;
+      expiryDate.setTime(expiryDate.getTime() + (24 * 60 * 60 * 1000));
+      if (!(noOfVisits = retrieve("noOfVisits")))
+        noOfVisits = 0;
+      noOfVisits++;
+      setCookie("noOfVisits", noOfVisits, expiryDate, "/", null, false);
+      alert("\n" + "You have visited " + " " + noOfVisits + " time(s) " + "in one day\n" + "\n");
+    }
+
+    function reset() {
+      var expiryDate = new Date();
+      expiryDate.setTime(expiryDate.getTime() + (24 * 60 * 60 * 1000 * 365));
+      noOfVisits = 0;
+      setCookie("noOfVisits", noOfVisits, expiryDate, "/", null, false);
+      history.go(0);
+    }
+
+    window.onload = showCookie
+  </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script type="module" src="/javascripts/menu.js"></script>
   <script type="module" src="/javascripts/gameLogic.js"></script>

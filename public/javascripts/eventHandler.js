@@ -52,6 +52,11 @@ export function serverMessageHandler(event) {
     if (message.type == undefined || message.data == undefined) {
         return;
     } else if (message.type == "addPlayer") {
+        if ($('#insertName').css('top') == "0px") {
+            $('#insertName .loading').toggle();
+            $('#insertName .username').toggle();
+            $('#insertName').css('top', '-100%');
+        }
         game.addPlayer(message.data.name, message.data.totalPoints, message.data.playerNumber, message.data.you);
     } else if (message.type == "playerLeft") {
         game.players.forEach((player) => {
@@ -81,7 +86,7 @@ export function serverMessageHandler(event) {
         if (from.chessPiece != null) {
             if (to.chessPiece != null) {
                 player.points += to.chessPiece.points;
-                $('.playerFrame[player='+player.playerNumber+'] .points').text(player.points);
+                $('.playerFrame[player=' + player.playerNumber + '] .points').text(player.points);
                 to.chessPiece.removeFromGame();
                 console.log(player.name + " has earned " + to.chessPiece.points + " points and now has a total of " + player.points + " points!");
             }
@@ -89,32 +94,32 @@ export function serverMessageHandler(event) {
         }
         player.yourTurn = false;
     } else if (message.type == "checkmate") {
-        let checkmate = game.players.find(p=>{return p.playerNumber==message.data.checkmate});
-        console.log("Player "+ checkmate.name +" is checkmate and will no longer be able to continue playing.");
-        message.data.players.forEach(n=>{
-            let player = game.players.find(p=>{return p.playerNumber==n;});
+        let checkmate = game.players.find(p => { return p.playerNumber == message.data.checkmate });
+        console.log("Player " + checkmate.name + " is checkmate and will no longer be able to continue playing.");
+        message.data.players.forEach(n => {
+            let player = game.players.find(p => { return p.playerNumber == n; });
             player.points += 20;
-            $('.playerFrame[player='+player.playerNumber+'] .points').text(player.points);
-            console.log(player.name + " has earned 20 points for having a part in the checkmate of "+ checkmate.name +" and now has a total of " + player.points + " points!");
+            $('.playerFrame[player=' + player.playerNumber + '] .points').text(player.points);
+            console.log(player.name + " has earned 20 points for having a part in the checkmate of " + checkmate.name + " and now has a total of " + player.points + " points!");
         });
-        checkmate.chessPieces.find(c=>{return c.chessPieceType.name=="king";}).removeFromGame();
+        checkmate.chessPieces.find(c => { return c.chessPieceType.name == "king"; }).removeFromGame();
         checkmate.playerDead();
-    } else if (message.type == "gameOver"){
+    } else if (message.type == "gameOver") {
         // TODO: Show Game over screen with points, who won and a return to menu button.
         $('#mainMenu').css('top', '0');
-    } else if (message.type == "replace"){
+    } else if (message.type == "replace") {
         let player = game.players.find(e => e.playerNumber == message.data.player);
         let tile = convertToPlayerCO(player, game.gameboard[message.data.tile.x][message.data.tile.y]);
         tile.chessPiece.removeFromGame();
         tile.chessPiece = new ChessPiece(tile, player, ChessPieceTypes[message.data.type]);
         player.chessPieces.push(tile.chessPiece);
-    } else if (message.type == "timer"){
+    } else if (message.type == "timer") {
+        let player = game.players.find(e => e.playerNumber == message.data);
+        player.timer.stop();
+        player.playerDead();
+    } else if (message.type == "surrender") {
         let player = game.players.find(e => e.playerNumber == message.data);
         player.timer.stop();
         player.playerDead();
     }
 }
-
-
-
-// TODO: Console messages should be replaced by recognizable sounds or visual changes.

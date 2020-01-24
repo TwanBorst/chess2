@@ -80,7 +80,7 @@ export class Player {
         if (this.game != null) {
             this.left = true;
             this.playing = false;
-            if(this.dead==false){
+            if (this.dead == false) {
                 this.game.announcePlayerLeft(this);
             }
         }
@@ -127,47 +127,63 @@ export class Player {
             if (this.game == null) {
                 return;
             }
-            this.game.players.forEach((player)=>{
-                if(player != this){
-                    if(message.data.players.includes(this.playerNumber)){
+            this.game.players.forEach((player) => {
+                if (player != this) {
+                    if (message.data.players.includes(this.playerNumber)) {
                         this.points += 20;
                     }
-                    player.sendMessage({type: 'checkmate', data: {checkmate: message.data.checkmate, players: message.data.players}});
+                    player.sendMessage({ type: 'checkmate', data: { checkmate: message.data.checkmate, players: message.data.players } });
                 }
             });
             this.dead = true;
-            if(this.game.players.filter(p=>{return p.dead==false&&p.left==false;}).length>1){
+            if (this.game.players.filter(p => { return p.dead == false && p.left == false; }).length > 1) {
                 this.game.giveTurn(this.game.playersTurn.nextTurn());
                 this.game.playersTurn.removePlayer(this);
             } else {
-               this.game.gameOver();
+                this.game.gameOver();
             }
         } else if (message.type == "replace") {
             if (this.game == null) {
                 return;
             }
-            this.game.players.forEach((player)=>{
-                if(player != this){
-                    player.sendMessage({type: 'replace', data: {player: this.playerNumber, tile: message.data.tile, type: message.data.type}});
+            this.game.players.forEach((player) => {
+                if (player != this) {
+                    player.sendMessage({ type: 'replace', data: { player: this.playerNumber, tile: message.data.tile, type: message.data.type } });
                 }
             });
         } else if (message.type == "setName") {
             this.playerID = message.data;
         } else if (message.type == "timer") {
-            if(this.game == null){
+            if (this.game == null) {
                 return;
             }
-            this.game.players.forEach((player)=>{
-                if(player != this){
-                    player.sendMessage({type: 'timer', data: message.data});
+            this.game.players.forEach((player) => {
+                if (player != this) {
+                    player.sendMessage({ type: 'timer', data: message.data });
                 }
             });
             this.dead = true;
-            if(this.game.players.filter(p=>{return p.dead==false&&p.left==false;}).length>1){
+            if (this.game.players.filter(p => { return p.dead == false && p.left == false; }).length > 1) {
                 this.game.giveTurn(this.game.playersTurn.nextTurn());
                 this.game.playersTurn.removePlayer(this);
             } else {
-               this.game.gameOver();
+                this.game.gameOver();
+            }
+        } else if (message.type == "surrender") {
+            if (this.game == null) {
+                return;
+            }
+            this.game.players.forEach((player) => {
+                if (player != this) {
+                    player.sendMessage({ type: 'surrender', data: message.data });
+                }
+            });
+            this.dead = true;
+            if (this.game.players.filter(p => { return p.dead == false && p.left == false; }).length > 1) {
+                this.game.giveTurn(this.game.playersTurn.nextTurn());
+                this.game.playersTurn.removePlayer(this);
+            } else {
+                this.game.gameOver();
             }
         }
     }
