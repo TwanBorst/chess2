@@ -2,32 +2,6 @@
 <html>
 
 <head>
-  <style>
-    .btn span {
-      cursor: pointer;
-      display: inline-block;
-      position: relative;
-      transition: 0.5s;
-    }
-
-    .btn span:after {
-      content: '\00bb';
-      position: absolute;
-      opacity: 0;
-      top: 0;
-      right: -20px;
-      transition: 0.5s;
-    }
-
-    .btn:hover span {
-      padding-right: 50px;
-    }
-
-    .btn:hover span:after {
-      opacity: 1;
-      right: 0;
-    }
-  </style>
   <title><%= title %></title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
@@ -70,8 +44,6 @@
         <ul>
           <li class="btn" name="playNow" onclick="sound.play()" ;><span>PLAY NOW</span></li>
           <li class="btn" name="setupGame"><span>SETUP GAME</span></li>
-          <li class="btn" name="rankings"><span>RANKINGS</span></li>
-          <li class="btn" name="settings"><span>SETTINGS</span></li>
         </ul>
       </div>
       <div class="stats">
@@ -95,6 +67,11 @@
   <div id="statPage">
     <div class="container">
       <span class="title">Statistics</span>
+      <div class="stats">
+        <div class="totalPlayerCount"><span>Total player count: </span><span class="stat">0</span></div>
+        <div class="queueSize"><span>Players currently in queue: </span><span class="stat">0</span></div>
+        <div class="activeGames"><span>Number of active games: </span><span class="stat">0</span></div>
+      </div>
       <ul>
         <li class="btn" name="backtopause"><span>BACK TO MENU</span></li>
       </ul>

@@ -128,9 +128,9 @@ export function serverMessageHandler(event) {
         player.timer.stop();
         player.playerDead();
     } else if (message.type == "stats"){
-        $('#mainMenu .stats .totalPlayerCount .stat').text(message.data.totalPlayerCount);
-        $('#mainMenu .stats .queueSize .stat').text(message.data.queueSize);
-        $('#mainMenu .stats .activeGames .stat').text(message.data.activeGames);
+        $('.stats .totalPlayerCount .stat').text(message.data.totalPlayerCount);
+        $('.stats .queueSize .stat').text(message.data.queueSize);
+        $('.stats .activeGames .stat').text(message.data.activeGames);
 
         $('#insertName .stat').text(message.data.queueSize);
     }
