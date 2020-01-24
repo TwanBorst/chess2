@@ -37,6 +37,7 @@ export class Player {
     playerDead() {
         this.yourTurn = false;
         this.dead = true;
+        $('.playerFrame[player='+this.playerNumber+'] .name').text(this.name + " (left)");
         this.chessPieces.forEach((chesspiece) => {
             chesspiece.playerDead();
         });

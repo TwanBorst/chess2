@@ -17,6 +17,31 @@ $('.btn[name="playNow"]').click(() => {
     $('#insertName').css('top', '0');
 });
 
+$('.btn[name="setupGame"]').click(()=>{
+    $('#mainMenu').css('top', '-100%');
+    $('#game #navigationBar span.title').toggle();
+    $('#game #navigationBar span.btn').toggle();
+    $('#customGame').css('top', '0');
+});
+
+$('#customGame button').click(()=>{
+    let lobby = $('#customGame .lobby input').first().val();
+    let username = $('#customGame .username input').first().val();
+    // @ts-ignore
+    if (lobby.length > 0 && username.length > 0) {
+        Game.startGame();
+        // @ts-ignore
+        window.server.send(JSON.stringify({ type: 'setName', data: username }));
+        // @ts-ignore
+        window.server.send(JSON.stringify({ type: 'lobby', data: lobby }));
+
+        $('#customGame').css('top', '-100%');
+        $('#insertName').css('top', 0);
+        $('#insertName .username').toggle();
+        $('#insertName .loading').toggle();
+    }
+});
+
 $('#insertName button').click(() => {
     let name = $('#insertName input').first().val();
     // @ts-ignore

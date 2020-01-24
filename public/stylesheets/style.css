@@ -402,6 +402,36 @@ body {
   animation-timing-function: linear;
   height: 4rem;
 }
+
+#customGame{
+  background: black;
+  position:absolute;
+  left: 0;
+  top: -100%;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  color: white;
+  opacity: 0.9;
+  transition-property: top;
+  transition-duration: 0.5s;
+  overflow:hidden;
+  display: flex;
+  justify-content: center;
+}
+
+#customGame .container{
+  align-self: center;
+}
+
+#customGame .container div {
+  margin: 5px 0 5px 0;
+}
+
+#customGame button{
+  width: 100%;
+}
+
 @keyframes borderAnimation{
   from {border-width: 0.5vh;}
   to {border-width: 0.1vh;}

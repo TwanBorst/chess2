@@ -106,6 +106,8 @@ export function serverMessageHandler(event) {
         checkmate.playerDead();
     } else if (message.type == "gameOver") {
         // TODO: Show Game over screen with points, who won and a return to menu button.
+        // @ts-ignore
+        window.player.game.gameOver();
         $('#mainMenu').css('top', '0');
     } else if (message.type == "replace") {
         let player = game.players.find(e => e.playerNumber == message.data.player);
@@ -125,5 +127,7 @@ export function serverMessageHandler(event) {
         $('#mainMenu .stats .totalPlayerCount .stat').text(message.data.totalPlayerCount);
         $('#mainMenu .stats .queueSize .stat').text(message.data.queueSize);
         $('#mainMenu .stats .activeGames .stat').text(message.data.activeGames);
+
+        $('#insertName .stat').text(message.data.queueSize);
     }
 }
