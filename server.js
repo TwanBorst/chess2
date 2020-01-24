@@ -10,6 +10,7 @@ class Server{
         this.games = Array();
 
         this.addLobby("public");
+        this.sendStatsInterval = setInterval(()=>{this.sendStats.apply(this)}, 4000);
     }
     /**
      * Add player to Server
@@ -68,6 +69,22 @@ class Server{
         } else {
             return null;
         }
+    }
+
+    /**
+     * Send stats to all players
+     *
+     */
+    sendStats(){
+        this.players.forEach((player)=>{
+            let queueSize;
+            if(player.lobby==null||player.lobby.id=="public"){
+                queueSize = this.getLobby("public").players.length();
+            } else {
+                queueSize = player.lobby.players.length;
+            }
+            player.sendMessage({type: "stats", data: {totalPlayerCount: this.players.length, queueSize: queueSize, activeGames: this.games.length}});
+        });
     }
 }
 

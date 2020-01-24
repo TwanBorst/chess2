@@ -121,5 +121,9 @@ export function serverMessageHandler(event) {
         let player = game.players.find(e => e.playerNumber == message.data);
         player.timer.stop();
         player.playerDead();
+    } else if (message.type == "stats"){
+        $('#mainMenu .stats .totalPlayerCount .stat').text(message.data.totalPlayerCount);
+        $('#mainMenu .stats .queueSize .stat').text(message.data.queueSize);
+        $('#mainMenu .stats .activeGames .stat').text(message.data.activeGames);
     }
 }
